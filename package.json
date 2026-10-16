@@ -1,0 +1,15 @@
+{
+  "name": "velora",
+  "version": "1.0.0",
+  "description": "AI coach that stress-tests startup ideas in Debate and Mentor modes. Built at DevHacks S3.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.9"
+  },
+  "license": "MIT"
+}

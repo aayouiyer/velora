@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Velora — Better Ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0b;
+  --bg2:#111114;
+  --bg3:#18181d;
+  --card:#16161a;
+  --white:#ffffff;
+  --black:#0a0a0b;
+  --coral:#4361ee;
+  --blue:#7b2ff7;
+  --mint:#00c2ff;
+  --yellow:#f5a623;
+  --green:#00d4a0;
+  --text:#f0eee8;
+  --muted:#666672;
+  --muted2:#888896;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.05);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--coral);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+#cur-ring{position:fixed;width:38px;height:38px;border:1.5px solid rgba(255,255,255,0.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;transition:background 0.4s,box-shadow 0.4s}
+nav.scrolled{background:rgba(10,10,11,0.85);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border)}
+.nav-logo{font-size:21px;font-weight:800;letter-spacing:-0.04em;color:var(--text)}
+.nav-logo span{color:var(--coral)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:14px;font-weight:400;color:var(--muted2);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;background:var(--coral);color:#fff;border:none;padding:11px 24px;border-radius:100px;cursor:none;transition:transform 0.2s,opacity 0.2s;box-shadow:0 0 24px rgba(67,97,238,0.35)}
+.nav-btn:hover{opacity:0.85;transform:scale(1.04)}
+a.nav-btn,a.btn-main,a.btn-chat,a.btn-sec,a.btn-cta{display:inline-block;text-decoration:none;line-height:normal}
+html{scroll-behavior:smooth}
+@media (hover:none){body,a,button{cursor:auto}#cur,#cur-ring{display:none}}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 40px 100px;position:relative;overflow:hidden}
+
+.blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:0.6}
+.blob-1{width:600px;height:600px;background:rgba(67,97,238,0.18);top:-160px;right:-160px;animation:bdrift1 14s ease-in-out infinite}
+.blob-2{width:500px;height:500px;background:rgba(245,166,35,0.1);bottom:-100px;left:-120px;animation:bdrift2 16s ease-in-out infinite}
+.blob-3{width:380px;height:380px;background:rgba(0,212,160,0.08);top:38%;left:42%;transform:translate(-50%,-50%);animation:bdrift3 12s ease-in-out infinite}
+@keyframes bdrift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-32px,24px)}}
+@keyframes bdrift2{0%,100%{transform:translate(0,0)}50%{transform:translate(24px,-30px)}}
+@keyframes bdrift3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,-64%)}}
+
+/* recognition hook strip */
+.hero-hook{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  padding:10px 20px;border-radius:100px;
+  font-size:13px;font-weight:400;color:var(--muted2);
+  margin-bottom:40px;
+  opacity:0;animation:fup 0.7s 0.15s forwards;
+  max-width:520px;text-align:center;line-height:1.4;
+}
+.hook-dot{width:7px;height:7px;background:var(--mint);border-radius:50%;flex-shrink:0;animation:pdot 2s infinite}
+.hook-em{color:var(--text);font-weight:600}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(1.6)}}
+
+.hero-title{font-size:clamp(52px,9vw,118px);font-weight:900;line-height:0.94;letter-spacing:-0.05em;max-width:960px;position:relative;z-index:2;min-height:2.8em;color:var(--text)}
+.char{display:inline-block;opacity:0;transform:translateY(105%);animation:charIn 0.52s cubic-bezier(0.16,1,0.3,1) forwards}
+.word{overflow:hidden;display:inline-block}
+.hl-coral{color:var(--coral)}
+.hl-blue{color:var(--blue)}
+.hl-mint{color:var(--mint)}
+@keyframes charIn{to{opacity:1;transform:none}}
+
+.hero-sub{font-size:clamp(16px,1.9vw,20px);font-weight:300;color:var(--muted2);max-width:500px;line-height:1.75;margin-top:30px;opacity:0;animation:fup 0.8s 1.3s forwards}
+
+.hero-actions{display:flex;gap:14px;align-items:center;margin-top:44px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fup 0.8s 1.55s forwards}
+.btn-main{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;background:var(--coral);color:#fff;border:none;padding:17px 38px;border-radius:100px;cursor:none;transition:transform 0.2s,opacity 0.2s,box-shadow 0.2s;box-shadow:0 4px 28px rgba(67,97,238,0.4)}
+.btn-main:hover{opacity:0.88;transform:translateY(-3px);box-shadow:0 12px 40px rgba(67,97,238,0.55)}
+.btn-chat{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;background:#00cfff;color:#0a0a0b;border:none;padding:17px 38px;border-radius:100px;cursor:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 0 18px rgba(0,207,255,0.6), 0 0 48px rgba(0,207,255,0.25), 0 4px 20px rgba(0,207,255,0.3)}
+.btn-chat:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(0,207,255,0.8), 0 0 72px rgba(0,207,255,0.35), 0 8px 32px rgba(0,207,255,0.4)}
+.btn-sec{font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;background:transparent;color:var(--muted2);border:1.5px solid var(--border);padding:16px 34px;border-radius:100px;cursor:none;transition:border-color 0.2s,color 0.2s,transform 0.2s}
+.btn-sec:hover{border-color:rgba(255,255,255,0.3);color:var(--text);transform:translateY(-3px)}
+
+/* 3D CUBE */
+.hero-3d-wrap{margin-top:66px;position:relative;z-index:2;opacity:0;animation:fup 1s 1.9s forwards}
+.scene-wrap{position:relative;width:220px;height:220px;margin:0 auto}
+.orbit{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%)}
+.orb-a{width:290px;height:80px;border:1px solid rgba(255,255,255,0.06);animation:ospin 10s linear infinite}
+.orb-b{width:250px;height:250px;border:1px dashed rgba(255,77,46,0.18);animation:ospin 24s linear infinite reverse}
+.orb-dot{position:absolute;top:-5px;left:50%;width:9px;height:9px;background:var(--coral);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--coral)}
+.orb-dot2{top:50%;left:-5px;width:7px;height:7px;background:var(--yellow);box-shadow:0 0 8px var(--yellow);transform:translateY(-50%)}
+@keyframes ospin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.scene{width:220px;height:220px;perspective:700px;position:relative;z-index:2}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:cubespin 18s linear infinite}
+@keyframes cubespin{from{transform:rotateY(0) rotateX(20deg)}to{transform:rotateY(360deg) rotateX(20deg)}}
+.face{position:absolute;width:88px;height:88px;top:50%;left:50%;margin:-44px;border:1px solid;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;backdrop-filter:blur(4px)}
+.fc1{background:rgba(255,77,46,0.1);border-color:rgba(255,77,46,0.3);transform:translateZ(55px)}
+.fc2{background:rgba(79,122,255,0.08);border-color:rgba(79,122,255,0.25);transform:rotateY(180deg) translateZ(55px)}
+.fc3{background:rgba(0,229,160,0.08);border-color:rgba(0,229,160,0.25);transform:rotateY(90deg) translateZ(55px)}
+.fc4{background:rgba(255,209,46,0.08);border-color:rgba(255,209,46,0.25);transform:rotateY(-90deg) translateZ(55px)}
+.fc5{background:rgba(255,77,46,0.06);border-color:rgba(255,77,46,0.15);transform:rotateX(90deg) translateZ(55px)}
+.fc6{background:rgba(79,122,255,0.06);border-color:rgba(79,122,255,0.15);transform:rotateX(-90deg) translateZ(55px)}
+
+.scroll-cue{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fup 1s 2.4s forwards}
+.scroll-cue span{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.scroll-wheel{width:22px;height:36px;border:1.5px solid rgba(255,255,255,0.15);border-radius:12px;display:flex;justify-content:center;padding-top:6px}
+.scroll-wheel::before{content:'';width:3px;height:8px;background:var(--text);border-radius:2px;animation:wscroll 1.8s ease-in-out infinite}
+@keyframes wscroll{0%{transform:translateY(0);opacity:1}100%{transform:translateY(9px);opacity:0}}
+
+/* TICKER */
+.ticker{overflow:hidden;background:rgba(255,255,255,0.03);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;position:relative;z-index:10}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 30s linear infinite}
+.t-item{font-size:12px;font-weight:500;color:var(--muted);padding:0 28px;flex-shrink:0;letter-spacing:0.03em}
+.t-item b{color:var(--yellow);margin-right:28px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SHARED */
+.sec{padding:120px 52px;max-width:1180px;margin:0 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:22px}
+.chip-coral{color:var(--coral);background:rgba(67,97,238,0.14)}
+.chip-blue{color:var(--blue);background:rgba(123,47,247,0.14)}
+.chip-mint{color:var(--mint);background:rgba(0,150,255,0.12)}
+.ttl{font-size:clamp(38px,5vw,68px);font-weight:800;line-height:1.04;letter-spacing:-0.04em;color:var(--text)}
+.ttl em{font-style:normal;color:var(--coral)}
+.ttl .b{color:var(--blue)}
+.ttl .m{color:#9b6dff}
+
+/* ============ CONCEPT ============ */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.c-body{font-size:17px;font-weight:300;color:var(--muted2);line-height:1.85;margin-top:28px}
+.c-body strong{color:var(--text);font-weight:600}
+
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:36px;box-shadow:0 12px 50px rgba(0,0,0,0.4);position:relative;overflow:hidden}
+.dcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--coral),var(--blue),var(--mint))}
+.d-head{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.d-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border2)}
+.d-row:last-of-type{border:none}
+.d-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ic{background:rgba(67,97,238,0.15)}.ib{background:rgba(0,194,255,0.12)}.im{background:rgba(0,212,160,0.12)}.iy{background:rgba(245,166,35,0.12)}
+.d-lbl{font-size:14px;font-weight:500;flex:1;white-space:nowrap;color:var(--text)}
+.d-bar-bg{flex:1.5;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.d-bar{height:100%;border-radius:3px;width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
+.bc{background:var(--coral)}.bb{background:var(--mint)}.bm{background:var(--green)}.by{background:var(--yellow)}
+.d-note{margin-top:16px;font-size:11px;font-weight:500;letter-spacing:0.06em;color:var(--muted);text-align:right}
+
+/* ============ HOW IT WORKS ============ */
+.steps-bg{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.steps-header{text-align:center;margin-bottom:64px}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.scard{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:40px 32px;position:relative;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s}
+.scard:hover{transform:translateY(-7px);box-shadow:0 24px 64px rgba(0,0,0,0.5)}
+.scard:nth-child(1):hover{border-color:rgba(67,97,238,0.5)}
+.scard:nth-child(2):hover{border-color:rgba(0,194,255,0.5)}
+.scard:nth-child(3):hover{border-color:rgba(0,212,160,0.5)}
+.scard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.3s}
+.scard:nth-child(1)::after{background:var(--coral)}
+.scard:nth-child(2)::after{background:var(--mint)}
+.scard:nth-child(3)::after{background:var(--green)}
+.scard:hover::after{opacity:1}
+.s-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;margin-bottom:24px}
+.scard:nth-child(1) .s-badge{background:rgba(67,97,238,0.15);color:var(--coral)}
+.scard:nth-child(2) .s-badge{background:rgba(0,194,255,0.13);color:var(--mint)}
+.scard:nth-child(3) .s-badge{background:rgba(0,212,160,0.12);color:var(--green)}
+.scard h3{font-size:21px;font-weight:700;letter-spacing:-0.025em;margin-bottom:14px;color:var(--text)}
+.scard p{font-size:15px;font-weight:300;color:var(--muted2);line-height:1.72}
+
+/* ============ FLOW ============ */
+.flow-sec{padding:100px 52px;background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.flow-inner{max-width:1100px;margin:0 auto}
+.flow-header{text-align:center;margin-bottom:72px}
+.flow-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.flow-steps{display:flex;flex-direction:column;gap:0}
+.fstep{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--border2);position:relative;transition:opacity 0.3s}
+.fstep:last-child{border:none}
+.fstep-left{display:flex;flex-direction:column;align-items:center;gap:0}
+.fstep-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.fstep:nth-child(1) .fstep-num{background:rgba(67,97,238,0.18);color:var(--coral)}
+.fstep:nth-child(2) .fstep-num{background:rgba(0,194,255,0.15);color:var(--mint)}
+.fstep:nth-child(3) .fstep-num{background:rgba(245,166,35,0.15);color:var(--yellow)}
+.fstep:nth-child(4) .fstep-num{background:rgba(0,212,160,0.15);color:var(--green)}
+.fstep:nth-child(5) .fstep-num{background:rgba(123,47,247,0.15);color:var(--blue)}
+.fstep-line{width:1px;flex:1;background:var(--border2);margin-top:6px;min-height:20px}
+.fstep:last-child .fstep-line{display:none}
+.fstep-content{flex:1;padding-top:6px}
+.fstep-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:5px;letter-spacing:-0.01em}
+.fstep-desc{font-size:14px;font-weight:300;color:var(--muted2);line-height:1.6}
+
+/* Chat mockup */
+.chat-mockup{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.chat-top{padding:14px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-top-dot{width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:0 0 8px var(--coral)}
+.chat-top-name{font-size:13px;font-weight:600;color:var(--text)}
+.chat-top-sub{font-size:11px;color:var(--muted);margin-left:auto}
+.chat-body{padding:20px;display:flex;flex-direction:column;gap:14px}
+.cmsg{max-width:78%;font-size:13px;font-weight:400;line-height:1.55;padding:12px 15px;border-radius:14px}
+.cmsg.user{background:rgba(67,97,238,0.15);border:1px solid rgba(67,97,238,0.3);color:var(--text);align-self:flex-end;border-bottom-right-radius:4px}
+.cmsg.bot{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px}
+.cmsg .sender{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px}
+.cmsg.bot .sender{color:var(--green)}
+.cmsg.user .sender{color:var(--yellow)}
+.chat-input-row{padding:14px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-input-fake{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:9px 16px;font-size:12px;color:var(--muted);font-family:'Outfit',sans-serif}
+.chat-send{width:32px;height:32px;background:var(--coral);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.typing-dots span{display:inline-block;width:5px;height:5px;background:var(--muted);border-radius:50%;margin:0 2px;animation:tdot 1.3s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+
+/* ============ VS ============ */
+.vs-wrap{background:var(--bg2);padding:100px 52px;border-top:1px solid var(--border)}
+.vs-in{max-width:1020px;margin:0 auto;text-align:center}
+.vs-ttl{font-size:clamp(34px,5vw,58px);font-weight:800;letter-spacing:-0.04em;color:var(--text);margin-bottom:56px;line-height:1.1}
+.vs-ttl span{color:var(--coral)}
+.vg{display:grid;grid-template-columns:1fr 64px 1fr;text-align:left}
+.vc{padding:40px;border-radius:18px}
+.vc.them{background:rgba(255,255,255,0.03);border:1px solid var(--border)}
+.vc.us{background:rgba(67,97,238,0.1);border:1px solid rgba(67,97,238,0.28)}
+.vm{display:flex;align-items:center;justify-content:center}
+.vbadge{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted)}
+.vh{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:28px}
+.vc.them .vh{color:var(--muted)}
+.vc.us .vh{color:var(--mint)}
+.vl{list-style:none;display:flex;flex-direction:column;gap:16px}
+.vl li{font-size:15px;font-weight:400;padding-left:22px;position:relative;line-height:1.5}
+.vc.them .vl li{color:rgba(255,255,255,0.32)}
+.vc.them .vl li::before{content:'✕';position:absolute;left:0;font-size:10px;color:rgba(255,255,255,0.15);top:3px}
+.vc.us .vl li{color:rgba(255,255,255,0.88)}
+.vc.us .vl li::before{content:'✦';position:absolute;left:0;font-size:9px;color:var(--coral);top:4px}
+
+/* ============ QUOTE CTA ============ */
+.qcta{padding:130px 52px;text-align:center;background:var(--bg);border-top:1px solid var(--border)}
+.qbig{font-size:clamp(28px,4.2vw,54px);font-weight:800;line-height:1.18;letter-spacing:-0.04em;max-width:700px;margin:0 auto 14px;color:var(--text)}
+.qbig em{font-style:normal;background:linear-gradient(135deg,var(--coral),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.qsrc{font-size:13px;color:var(--muted);font-weight:400;margin-bottom:52px}
+.btn-cta{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--coral),var(--blue));color:#fff;border:none;padding:20px 52px;border-radius:100px;cursor:none;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 8px 36px rgba(67,97,238,0.35)}
+.btn-cta:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 20px 56px rgba(123,47,247,0.45)}
+
+footer{padding:38px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);background:var(--bg)}
+.fl{font-size:18px;font-weight:800;letter-spacing:-0.03em;color:var(--text)}
+.fl span{color:var(--coral)}
+.fn{font-size:13px;color:var(--muted)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1),transform 0.85s cubic-bezier(0.16,1,0.3,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.22s}.d3{transition-delay:.34s}.d4{transition-delay:.48s}
+
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){
+  .cg,.steps-grid,.vg,.flow-layout{grid-template-columns:1fr}
+  .vm{display:none}
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .sec,.flow-sec{padding:72px 24px}
+  footer{flex-direction:column;gap:12px;padding:30px 24px}
+  .hero-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Vel<span>◈</span>ra</div>
+  <ul class="nav-links">
+    <li><a href="#concept">Why</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#compare">Compare</a></li>
+  </ul>
+  <a class="nav-btn" href="velora-chat.html">Try Velora →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="hero-hook">
+    <span class="hook-dot"></span>
+    The AI coach that <span class="hook-em">stress-tests your idea</span> — not one that hypes it up.
+  </div>
+
+  <h1 class="hero-title" id="heroTitle"></h1>
+
+  <p class="hero-sub">Not another AI that hands you a business plan — one that challenges you until your idea is actually ready. Debate mode. Mentor mode. Real clarity.</p>
+
+  <div class="hero-actions">
+    <a class="btn-chat" href="velora-chat.html">💡 Test my idea</a>
+    <a class="btn-main" href="#how">See how it works ↓</a>
+    <a class="btn-sec" href="#concept">Learn more</a>
+  </div>
+
+  <div class="hero-3d-wrap">
+    <div class="scene-wrap">
+      <div class="orbit orb-a"><div class="orb-dot"></div></div>
+      <div class="orbit orb-b"><div class="orb-dot orb-dot2"></div></div>
+      <div class="scene">
+        <div class="cube">
+          <div class="face fc1">💡</div>
+          <div class="face fc2">🎯</div>
+          <div class="face fc3">🔍</div>
+          <div class="face fc4">✦</div>
+          <div class="face fc5">🚀</div>
+          <div class="face fc6">◈</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-wheel"></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="t-item"><b>✦</b>Debate mode</span>
+    <span class="t-item"><b>✦</b>Mentor mode</span>
+    <span class="t-item"><b>✦</b>Stress-test your idea</span>
+    <span class="t-item"><b>✦</b>Surface blind spots</span>
+    <span class="t-item"><b>✦</b>Idea clarity score</span>
+    <span class="t-item"><b>✦</b>One sharp question at a time</span>
+    <span class="t-item"><b>✦</b>Clarity over hype</span>
+    <span class="t-item"><b>✦</b>Debate mode</span>
+    <span class="t-item"><b>✦</b>Mentor mode</span>
+    <span class="t-item"><b>✦</b>Stress-test your idea</span>
+    <span class="t-item"><b>✦</b>Surface blind spots</span>
+    <span class="t-item"><b>✦</b>Idea clarity score</span>
+    <span class="t-item"><b>✦</b>One sharp question at a time</span>
+    <span class="t-item"><b>✦</b>Clarity over hype</span>
+  </div>
+</div>
+
+<!-- CONCEPT -->
+<div class="sec" id="concept">
+  <div class="cg">
+    <div>
+      <div class="chip chip-coral reveal">The Problem</div>
+      <h2 class="ttl reveal d1">Every AI just<br>validates your <em>idea.</em></h2>
+      <p class="c-body reveal d2">ChatGPT, Gemini — they all tell you what you want to hear. You ask if your idea is good, they say yes with a 5-step plan.<br><br>Velora is different. It optimizes for <strong>idea clarity and execution readiness</strong> — the kind that shows you exactly where your thinking is weak before the market does.</p>
+    </div>
+    <div class="dcard reveal d3" id="diagramCard">
+      <div class="d-head">What Velora optimizes for</div>
+      <div class="d-row"><div class="d-ico ic">🎯</div><div class="d-lbl">Problem Clarity</div><div class="d-bar-bg"><div class="d-bar bc" data-w="92"></div></div></div>
+      <div class="d-row"><div class="d-ico ib">💡</div><div class="d-lbl">Idea Strength</div><div class="d-bar-bg"><div class="d-bar bb" data-w="85"></div></div></div>
+      <div class="d-row"><div class="d-ico im">🔍</div><div class="d-lbl">Execution Readiness</div><div class="d-bar-bg"><div class="d-bar bm" data-w="78"></div></div></div>
+      <div class="d-note">What Velora is built around ↑</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="steps-bg" id="how">
+<div class="sec" style="padding-top:100px;padding-bottom:100px">
+  <div class="steps-header">
+    <div class="chip chip-blue reveal">How it works</div>
+    <h2 class="ttl reveal d1">Two modes.<br><span class="b">One clear outcome.</span></h2>
+  </div>
+  <div class="steps-grid">
+    <div class="scard reveal">
+      <div class="s-badge">01</div>
+      <h3>Share your idea</h3>
+      <p>Tell Velora what you're building — messy, half-formed, or fully fleshed out. No judgment. Just describe it.</p>
+    </div>
+    <div class="scard reveal d1">
+      <div class="s-badge">02</div>
+      <h3>Get challenged or guided</h3>
+      <p>Pick Debate to have every weak point exposed, or Mentor for honest, no-fluff guidance. Both modes skip the hype.</p>
+    </div>
+    <div class="scard reveal d2">
+      <div class="s-badge">03</div>
+      <h3>See your idea's score</h3>
+      <p>Hit "Check Idea Status" at any point to get a real-time clarity score across 6 dimensions — problem, customer, revenue, and more.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- HOW THINKING HAPPENS -->
+<div class="flow-sec" id="chat-section">
+  <div class="flow-inner">
+    <div class="flow-header">
+      <div class="chip chip-mint reveal" style="display:inline-flex">The Process</div>
+      <h2 class="ttl reveal d1" style="margin-top:14px">How a real<br><span class="m">conversation</span> unfolds.</h2>
+    </div>
+    <div class="flow-layout">
+
+      <!-- LEFT: step-by-step -->
+      <div class="flow-steps reveal">
+        <div class="fstep">
+          <div class="fstep-left"><div class="fstep-num">1</div><div class="fstep-line"></div></div>
+          <div class="fstep-content">
+            <div class="fstep-title">You share the idea</div>
+            <div class="fstep-desc">Tell Velora what you're working on — big, small, early, or already building.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-left"><div class="fstep-num">2</div><div class="fstep-line"></div></div>
+          <div class="fstep-content">
+            <div class="fstep-title">Choose your mode</div>
+            <div class="fstep-desc">Debate mode challenges every weak claim. Mentor mode gives honest, direct coaching without the sugarcoating.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-left"><div class="fstep-num">3</div><div class="fstep-line"></div></div>
+          <div class="fstep-content">
+            <div class="fstep-title">Defend your thinking</div>
+            <div class="fstep-desc">Responding out loud forces clarity. You start hearing exactly where your reasoning is shaky.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-left"><div class="fstep-num">4</div><div class="fstep-line"></div></div>
+          <div class="fstep-content">
+            <div class="fstep-title">Blind spots surface</div>
+            <div class="fstep-desc">Assumptions and gaps emerge through the dialogue — not from the AI deciding for you, but from you working it out.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-left"><div class="fstep-num">5</div><div class="fstep-line"></div></div>
+          <div class="fstep-content">
+            <div class="fstep-title" style="color:var(--mint)">✨ Idea clarity arrives</div>
+            <div class="fstep-desc">Your score. Your gaps. Your next step. Earned — not handed to you.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: chat mockup -->
+      <div class="chat-mockup reveal d2">
+        <div class="chat-top">
+          <div class="chat-top-dot"></div>
+          <div class="chat-top-name">Velora</div>
+          <div class="chat-top-sub">Debate Mode · Active</div>
+        </div>
+        <div class="chat-body">
+          <div class="cmsg user">
+            <div class="sender">You</div>
+            I want to build an app that helps people find therapists faster.
+          </div>
+          <div class="cmsg bot">
+            <div class="sender">Velora</div>
+            "Faster" isn't a business. Why can't someone just Google a therapist right now?
+          </div>
+          <div class="cmsg user">
+            <div class="sender">You</div>
+            The matching is bad — people end up with the wrong fit and quit after one session.
+          </div>
+          <div class="cmsg bot">
+            <div class="sender">Velora</div>
+            Who pays? The therapist to get listed, or the patient to get matched?
+          </div>
+          <div class="cmsg bot" style="padding:14px 15px">
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <div class="chat-input-fake">Reply to Velora…</div>
+          <div class="chat-send">↑</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- VS -->
+<div class="vs-wrap" id="compare">
+  <div class="vs-in">
+    <h2 class="vs-ttl reveal">Velora vs <span>Everything else</span></h2>
+    <div class="vg reveal d1">
+      <div class="vc them">
+        <div class="vh">Other AI tools</div>
+        <ul class="vl">
+          <li>Validates your idea instantly</li>
+          <li>Optimizes for speed &amp; agreement</li>
+          <li>Does the thinking for you</li>
+          <li>Creates dependency on the tool</li>
+          <li>Hype that doesn't survive reality</li>
+        </ul>
+      </div>
+      <div class="vm"><div class="vbadge">vs</div></div>
+      <div class="vc us">
+        <div class="vh">Velora</div>
+        <ul class="vl">
+          <li>Challenges the weakest parts of your idea</li>
+          <li>Optimizes for clarity &amp; execution readiness</li>
+          <li>Forces you to think it through yourself</li>
+          <li>Makes your idea sharper with every session</li>
+          <li>A score that reflects reality, not hope</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE CTA -->
+<div class="qcta">
+  <p class="qbig reveal">"The untested idea<br>is not worth <em>building.</em>"</p>
+  <p class="qsrc reveal d1">Velora — stress-test before you ship</p>
+  <a class="btn-cta reveal d2" href="velora-chat.html">Start testing your idea →</a>
+</div>
+
+<footer>
+  <div class="fl">Vel<span>◈</span>ra</div>
+  <div class="fn">Built at DevHacks S3 · 2026</div>
+</footer>
+
+<script src="index.js"></script>
+</body>
+</html>
